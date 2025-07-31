@@ -8,12 +8,626 @@
     <meta name="keywords" content="paneles solares, energía solar, Ruuf, Chile, ahorro energético, netbilling, energía renovable, huella de carbono, cotizar paneles, IA solar">
     <meta name="author" content="Ruuf Solar">
 
-    <!-- Enlace a Google Fonts - Fuente Inter para una estética moderna y legible -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Enlace a Google Fonts - Fuente Poppins para una estética suave y redondeada -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <!-- Enlace a Font Awesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Enlace a nuestro archivo CSS personalizado -->
-    <link rel="stylesheet" href="style.css">
+
+    <!-- Estilos CSS integrados -->
+    <style>
+        /* Variables CSS para los colores primarios de Ruuf */
+        :root {
+            --primary-yellow: #eace51; /* Acento sutil */
+            --primary-blue: #2e3f9f; /* Morado oscuro principal */
+            --secondary-blue: #5d6cd0; /* Morado claro secundario */
+            --text-dark: #2a2a2a;
+            --text-light: #f9f9f9; /* Blanco para texto en fondos oscuros */
+            --bg-white: #FFFFFF; /* Blanco puro para fondos principales */
+            --bg-light-grey: #F8F8F8; /* Gris muy claro para secciones sutiles */
+            --gradient-purple-blue: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+        }
+
+        /* Estilos globales y reseteo básico */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif; /* Fuente Poppins */
+            line-height: 1.7;
+            color: var(--text-dark);
+            background-color: var(--bg-white); /* Fondo principal blanco */
+            overflow-x: hidden; /* Evita el scroll horizontal */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 25px; /* Más padding para minimalismo */
+        }
+
+        /* Animaciones generales */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            animation: fadeInUp 0.9s ease-out forwards; /* Animación más lenta y suave */
+        }
+
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+        .delay-5 { animation-delay: 1s; }
+
+        /* Estilos para la cabecera (Header) */
+        .header {
+            background-color: var(--bg-white); /* Fondo blanco para el header */
+            color: var(--primary-blue); /* Texto principal en morado */
+            padding: 18px 0; /* Un poco más de padding */
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Sombra más sutil */
+            transition: background-color 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .header.scrolled {
+            background-color: rgba(255, 255, 255, 0.95); /* Ligeramente transparente al hacer scroll */
+            padding: 12px 0; /* Se encoge un poco al hacer scroll */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Sombra un poco más visible al hacer scroll */
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 24px; /* Logo a la mitad del tamaño */
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            gap: 35px; /* Más espacio entre elementos de navegación */
+        }
+
+        .nav-link {
+            color: var(--primary-blue); /* Enlaces en morado */
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 0;
+            position: relative;
+            transition: color 0.3s ease;
+            font-size: 1.05em;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            background-color: var(--primary-yellow); /* Acento amarillo */
+            bottom: -8px; /* Más abajo para un look flotante */
+            left: 50%;
+            transform: translateX(-50%);
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .btn-cotizar-nav {
+            background-color: var(--primary-yellow); /* Botón cotizar en amarillo */
+            color: var(--primary-blue);
+            padding: 14px 28px; /* Un poco más grande */
+            border-radius: 30px;
+            font-weight: 700;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+
+        .btn-cotizar-nav:hover {
+            background-color: #dcb33e;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Botón de menú para móviles */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 2em; /* Icono más grande */
+            color: var(--primary-blue); /* Color morado para el icono */
+            cursor: pointer;
+            z-index: 1100;
+        }
+
+        /* Estilos para los botones generales */
+        .btn {
+            display: inline-block;
+            padding: 18px 45px; /* Más padding */
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.15em;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-yellow); /* Botón primario amarillo */
+            color: var(--primary-blue);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+            background-color: #dcb33e;
+        }
+
+        .btn-secondary {
+            background: var(--gradient-purple-blue); /* Degradado principal para secundario */
+            color: var(--text-light);
+            border: 2px solid var(--primary-yellow); /* Borde amarillo sutil */
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%); /* Degradado inverso */
+        }
+
+        /* Sección Hero */
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            color: var(--text-light);
+            text-align: center;
+            padding-top: 100px; /* Más espacio para el header fijo */
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* IMAGEN REAL DE CASA CON PANELES SOLARES */
+            background-image: url('https://images.pexels.com/photos/356036/pexels-photo-356036.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.6) grayscale(0.2); /* Oscurece y da un toque más sobrio */
+            z-index: 1;
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(46, 63, 159, 0.5); /* Superposición azul/morada */
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            max-width: 900px;
+            padding: 40px; /* Más padding */
+            background: rgba(255, 255, 255, 0.1); /* Fondo muy sutilmente transparente */
+            border-radius: 25px; /* Más redondeado */
+            backdrop-filter: blur(8px); /* Más desenfoque */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); /* Sombra más profunda */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Borde sutil */
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.8em, 5.5vw, 5em); /* Título más grande */
+            margin-bottom: 25px;
+            font-weight: 800;
+            line-height: 1.15;
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Sección de Beneficios */
+        .benefits-section {
+            padding: 120px 0; /* Más padding */
+            background-color: var(--bg-white); /* Fondo blanco */
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .benefits-section h2 {
+            font-size: clamp(2.5em, 4.5vw, 4em); /* Título más grande */
+            color: var(--primary-blue);
+            margin-bottom: 80px; /* Más espacio */
+            font-weight: 800;
+            position: relative;
+            display: inline-block;
+        }
+
+        .benefits-section h2::after {
+            content: '';
+            position: absolute;
+            width: 100px; /* Línea más larga */
+            height: 6px; /* Línea más gruesa */
+            background-color: var(--primary-yellow);
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 3px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Tarjetas un poco más grandes */
+            gap: 50px; /* Más espacio entre tarjetas */
+            margin-top: 50px;
+        }
+
+        .benefit-card {
+            background-color: var(--bg-light-grey); /* Fondo gris claro para las tarjetas */
+            border-radius: 25px; /* Más redondeado */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1); /* Sombra más suave */
+            padding: 45px; /* Más padding */
+            text-align: center;
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .benefit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px; /* Línea superior más gruesa */
+            background: var(--gradient-purple-blue);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease-out;
+        }
+
+        .benefit-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-20px); /* Más elevación */
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2); /* Sombra más prominente */
+        }
+
+        .icon-benefit { /* Estilo para los iconos de beneficio */
+            font-size: 4em; /* Icono más grande */
+            color: var(--primary-blue); /* Color morado para el icono */
+            margin-bottom: 30px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .benefit-card:hover .icon-benefit {
+            transform: scale(1.15) rotate(8deg); /* Más rotación y escala */
+            color: var(--secondary-blue); /* Cambia a morado claro al pasar el ratón */
+        }
+
+        .benefit-card h3 {
+            font-size: clamp(1.6em, 2.8vw, 2.2em); /* Título de tarjeta más grande */
+            color: var(--primary-blue);
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+
+        .benefit-card p {
+            font-size: clamp(1.05em, 1.6vw, 1.2em);
+            color: var(--text-dark);
+            line-height: 1.8;
+        }
+
+        /* Sección de IA Chat */
+        .ia-chat-section {
+            background-color: var(--bg-white); /* Fondo blanco para la sección de IA */
+            color: var(--text-dark); /* Texto oscuro */
+            padding: 120px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ia-chat-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* IMAGEN ABSTRACTA PARA FONDO DE IA */
+            background-image: url('https://placehold.co/1920x1080/FFFFFF/5d6cd0?text=Fondo+Abstracto+Conexion+IA'); /* Fondo abstracto más tecnológico, con morado sutil */
+            background-size: cover;
+            background-position: center;
+            opacity: 0.05; /* Muy sutil */
+            z-index: 1;
+        }
+
+        .ia-chat-section .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .ia-chat-section h2 {
+            font-size: clamp(2.5em, 4.5vw, 4em);
+            margin-bottom: 25px;
+            font-weight: 800;
+            color: var(--primary-blue); /* Título en morado */
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1); /* Sombra más suave */
+        }
+
+        .ia-chat-section p {
+            font-size: clamp(1.2em, 2.2vw, 1.6em);
+            margin-bottom: 60px;
+            font-weight: 300;
+            max-width: 850px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Sección de Llamada a la Acción Final */
+        .cta-section {
+            background-color: var(--bg-white); /* Fondo blanco para CTA */
+            color: var(--primary-blue); /* Texto principal en morado */
+            padding: 120px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* IMAGEN REAL DE FAMILIA FELIZ CON PANELES SOLARES */
+            background-image: url('https://images.pexels.com/photos/159397/solar-panel-solar-energy-solar-power-energy-159397.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Parallax sutil */
+            filter: brightness(0.8) grayscale(0.05); /* Menos oscuro y desaturado para fondo blanco */
+            z-index: 1;
+        }
+
+        .cta-section .container {
+            position: relative;
+            z-index: 2;
+            padding: 0; /* Reiniciar padding */
+            border-radius: 0; /* Reiniciar border-radius */
+            box-shadow: none; /* Eliminar sombra */
+            border: none; /* Eliminar borde */
+            max-width: 800px;
+            margin: 0 auto;
+            color: var(--primary-blue); /* Asegurar color de texto correcto */
+        }
+
+        .cta-section h2 {
+            font-size: clamp(2.5em, 4.5vw, 4em);
+            margin-bottom: 25px;
+            font-weight: 800;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .cta-section p {
+            font-size: clamp(1.2em, 2.2vw, 1.6em);
+            margin-bottom: 60px;
+            font-weight: 500;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Pie de página (Footer) */
+        .footer {
+            background-color: var(--primary-blue); /* Fondo morado oscuro */
+            color: var(--text-light);
+            padding: 50px 0; /* Más padding */
+            text-align: center;
+            font-size: 1em;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px; /* Más espacio */
+        }
+
+        .social-links {
+            display: flex;
+            gap: 30px; /* Más espacio */
+        }
+
+        .social-links a {
+            color: var(--text-light);
+            font-size: 1.8em; /* Iconos más grandes */
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--primary-yellow); /* Acento amarillo al pasar el ratón */
+            transform: translateY(-5px) scale(1.2); /* Más animación */
+        }
+
+        /* Overlay para el menú móvil */
+        .mobile-nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(46, 63, 159, 0.98); /* Fondo morado oscuro casi opaco */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .mobile-nav-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-nav-overlay .nav-list {
+            flex-direction: column;
+            gap: 40px; /* Más espacio */
+            text-align: center;
+        }
+
+        .mobile-nav-overlay .nav-link {
+            font-size: 2.2em; /* Enlaces más grandes */
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15); /* Borde más sutil */
+        }
+
+        .mobile-nav-overlay .nav-link:last-child {
+            border-bottom: none;
+        }
+
+        .close-menu {
+            position: absolute;
+            top: 40px; /* Más abajo */
+            right: 40px; /* Más a la derecha */
+            background: none;
+            border: none;
+            font-size: 3em; /* Icono más grande */
+            color: var(--text-light);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .close-menu:hover {
+            transform: rotate(90deg); /* Gira al pasar el ratón */
+        }
+
+        /* Media Queries para Responsividad */
+        @media (max-width: 992px) {
+            .nav {
+                display: none;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .hero-content {
+                padding: 30px;
+            }
+            .hero-content h1 {
+                font-size: clamp(2.2em, 5vw, 4em);
+            }
+            .benefits-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 40px;
+            }
+            .btn {
+                padding: 15px 35px;
+                font-size: 1.05em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header .container {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .hero-section {
+                padding-top: 80px;
+            }
+            .hero-content {
+                max-width: 95%;
+            }
+            .benefits-section, .ia-chat-section, .cta-section {
+                padding: 90px 0;
+            }
+            .benefits-section h2, .ia-chat-section h2, .cta-section h2 {
+                font-size: clamp(2em, 4vw, 3.2em);
+            }
+            .benefit-card {
+                padding: 35px;
+            }
+            .benefit-card h3 {
+                font-size: clamp(1.4em, 2.5vw, 2em);
+            }
+            .cta-section .container {
+                padding: 0; /* Reiniciar padding */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+            .logo img {
+                height: 24px; /* Asegura que el logo se mantenga pequeño en móviles */
+            }
+            .hero-content h1 {
+                font-size: clamp(1.8em, 5vw, 2.8em);
+            }
+            .btn {
+                padding: 12px 28px;
+                font-size: 0.95em;
+            }
+            .benefits-section h2, .ia-chat-section h2, .cta-section h2 {
+                font-size: clamp(1.8em, 4vw, 2.5em);
+            }
+            .mobile-nav-overlay .nav-link {
+                font-size: 1.8em;
+            }
+            .close-menu {
+                font-size: 2.5em;
+                top: 30px;
+                right: 30px;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -21,8 +635,7 @@
     <header class="header">
         <div class="container">
             <div class="logo">
-                <!-- Placeholder para el logo de Ruuf -->
-                <img src="https://placehold.co/120x40/2e3f9f/eace51?text=RUUF" alt="Logo de Ruuf Solar">
+                <img src="https://ruuf.cl/_next/static/media/mail-logo.eed78104.svg" alt="Logo de Ruuf Solar">
             </div>
             <nav class="nav">
                 <ul class="nav-list">
@@ -32,83 +645,93 @@
                     <li><a href="https://ruuf.cl/onboarding" target="_blank" class="nav-link btn-cotizar-nav">Cotizar Ahora</a></li>
                 </ul>
             </nav>
+            <!-- Botón de menú para móviles -->
+            <button class="menu-toggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </header>
 
-    <!-- Sección Hero - Primera impresión con efecto parallax -->
-    <section id="hero" class="hero-section parallax-bg" data-parallax-speed="0.5">
+    <!-- Overlay para el menú móvil -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay">
+        <button class="close-menu" id="closeMenu" aria-label="Close navigation"><i class="fas fa-times"></i></button>
+        <ul class="nav-list">
+            <li><a href="#hero" class="nav-link" data-close-menu>Inicio</a></li>
+            <li><a href="#beneficios" class="nav-link" data-close-menu>Beneficios</a></li>
+            <li><a href="#ia-chat" class="nav-link" data-close-menu>Conversa con nuestra IA</a></li>
+            <li><a href="https://ruuf.cl/onboarding" target="_blank" class="nav-link btn-cotizar-nav">Cotizar Ahora</a></li>
+        </ul>
+    </div>
+
+    <!-- Sección Hero - Primera impresión con efecto parallax y contenido visual -->
+    <section id="hero" class="hero-section">
+        <div class="hero-background" id="heroBackground"></div>
+        <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1>Ilumina tu Futuro con Energía Solar Inteligente</h1>
-            <p>Paneles solares de Ruuf: Ahorro, valor y sostenibilidad para tu hogar en Chile.</p>
-            <a href="https://ruuf.cl/onboarding" target="_blank" class="btn btn-primary">¡Cotiza tu Sistema Solar Hoy!</a>
+            <h1 class="fade-in-up">Los paneles solares pueden hacer que tu cuenta eléctrica salga costo 0$</h1>
+            <a href="#beneficios" class="btn btn-primary fade-in-up delay-2">¿En serio?, cuéntame más</a>
         </div>
     </section>
 
-    <!-- Sección de Beneficios - Cada beneficio con su propio efecto parallax -->
+    <!-- Sección de Beneficios - Cada beneficio con su propio efecto y iconos -->
     <section id="beneficios" class="benefits-section">
         <div class="container">
-            <h2>Descubre los Beneficios de Ruuf Solar</h2>
+            <h2 class="fade-in-up">Beneficios que Iluminan tu Vida con Ruuf</h2>
 
-            <!-- Beneficio 1: Reducción significativa de la cuenta de luz -->
-            <div class="benefit-card parallax-element" data-parallax-speed="0.2">
-                <i class="fas fa-lightbulb icon-benefit"></i>
-                <h3>Reducción Significativa de tu Cuenta de Luz</h3>
-                <p>Imagina pagar $0 en consumo eléctrico mensual una vez que tu sistema esté pagado. Con Ruuf, eliminas el impacto de las alzas tarifarias y tomas el control de tus gastos energéticos.</p>
-            </div>
+            <div class="benefits-grid">
+                <!-- Beneficio 1: Reducción significativa de la cuenta de luz -->
+                <div class="benefit-card fade-in-up delay-1" data-animate-on-scroll>
+                    <i class="fas fa-lightbulb icon-benefit"></i>
+                    <h3>Adiós a la Cuenta de Luz</h3>
+                    <p>Imagina pagar $0 en consumo eléctrico mensual. Con Ruuf, eliminas las alzas tarifarias y tomas el control total de tus gastos energéticos. ¡Libertad financiera garantizada!</p>
+                </div>
 
-            <!-- Beneficio 2: Ahorro a largo plazo -->
-            <div class="benefit-card parallax-element" data-parallax-speed="0.2">
-                <i class="fas fa-wallet icon-benefit"></i>
-                <h3>Ahorro Garantizado a Largo Plazo</h3>
-                <p>Un sistema solar de Ruuf está diseñado para durar más de 25 años, generando millones en ahorro durante su vida útil. Disfruta de la calefacción o el aire acondicionado sin culpas.</p>
-            </div>
+                <!-- Beneficio 2: Ahorro a largo plazo -->
+                <div class="benefit-card fade-in-up delay-2" data-animate-on-scroll>
+                    <i class="fas fa-wallet icon-benefit"></i>
+                    <h3>Ahorro que Crece Contigo</h3>
+                    <p>Un sistema solar de Ruuf dura más de 25 años, generando millones en ahorro. Disfruta de la calefacción o el aire acondicionado sin culpas, sabiendo que inviertes en tu futuro.</p>
+                </div>
 
-            <!-- Beneficio 3: Ingreso por energía sobrante (Netbilling) -->
-            <div class="benefit-card parallax-element" data-parallax-speed="0.2">
-                <i class="fas fa-exchange-alt icon-benefit"></i>
-                <h3>Ingreso por Energía Sobrante (Netbilling)</h3>
-                <p>Gracias a la ley de Netbilling, puedes vender tu excedente de energía a la red eléctrica y recibir descuentos directos en tu boleta. ¡Sí, te pagan por no pagar luz!</p>
-            </div>
+                <!-- Beneficio 3: Ingreso por energía sobrante (Netbilling) -->
+                <div class="benefit-card fade-in-up delay-3" data-animate-on-scroll>
+                    <i class="fas fa-exchange-alt icon-benefit"></i>
+                    <h3>Gana con tu Excedente</h3>
+                    <p>Gracias al Netbilling, vendes tu energía sobrante a la red y recibes descuentos directos. Es como si "te pagaran por no pagar luz". ¡Tu hogar, una fuente de ingresos!</p>
+                </div>
 
-            <!-- Beneficio 4: Valor agregado a la propiedad -->
-            <div class="benefit-card parallax-element" data-parallax-speed="0.2">
-                <i class="fas fa-home icon-benefit"></i>
-                <h3>Valor Agregado a tu Propiedad</h3>
-                <p>Las viviendas equipadas con paneles solares de Ruuf no solo son más eficientes, sino que también aumentan su valor en el mercado, siendo más atractivas para compradores conscientes del gasto energético.</p>
-            </div>
+                <!-- Beneficio 4: Valor agregado a la propiedad -->
+                <div class="benefit-card fade-in-up delay-4" data-animate-on-scroll>
+                    <i class="fas fa-home icon-benefit"></i>
+                    <h3>Tu Propiedad, Más Valiosa</h3>
+                    <p>Las viviendas con paneles solares de Ruuf aumentan su valor en el mercado. Son más atractivas para compradores inteligentes y conscientes de la eficiencia energética. ¡Una inversión que rinde!</p>
+                </div>
 
-            <!-- Beneficio 5: Impacto ambiental positivo -->
-            <div class="benefit-card parallax-element" data-parallax-speed="0.2">
-                <i class="fas fa-leaf icon-benefit"></i>
-                <h3>Impacto Ambiental Positivo</h3>
-                <p>Al generar tu propia energía solar, reduces significativamente tu huella de carbono y contribuyes activamente a un futuro más limpio, verde y sustentable para Chile y el planeta.</p>
+                <!-- Beneficio 5: Impacto ambiental positivo -->
+                <div class="benefit-card fade-in-up delay-5" data-animate-on-scroll>
+                    <i class="fas fa-leaf icon-benefit"></i>
+                    <h3>Un Planeta Más Limpio</h3>
+                    <p>Generar tu propia energía solar reduce tu huella de carbono y contribuye a un futuro más limpio y sustentable. ¡Sé parte del cambio, un panel a la vez!</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Sección de IA Chat - Integración del modelo CodeGPT -->
+    <!-- Sección de IA Chat - Botón para conversar con Ruufcito -->
     <section id="ia-chat" class="ia-chat-section">
         <div class="container">
-            <h2>¿Tienes Preguntas? ¡Conversa con Nuestra IA Experta!</h2>
-            <p>Nuestra inteligencia artificial, potenciada por Gemini 2.0 Flash, está lista para resolver tus dudas sobre energía solar, instalación, beneficios y más.</p>
-            <div class="ia-chat-embed">
-                <!-- Iframe para incrustar el chat de CodeGPT -->
-                <iframe
-                    src="https://app.codegpt.co/chat/share/dd814661-6cd8-43b9-8155-18fdbbf8a6a4/?pincode=u7jxnu"
-                    frameborder="0"
-                    allowfullscreen
-                    title="Chat de IA Ruuf Solar"
-                ></iframe>
-            </div>
+            <h2 class="fade-in-up">¿Te quedan dudas? Conversa con Ruufcito al instante</h2>
+            <p class="fade-in-up delay-1">Nuestra inteligencia artificial, potenciada por Gemini 2.0 Flash, está lista para resolver todas tus dudas sobre energía solar, instalación, beneficios y más. ¡Pregúntale lo que quieras!</p>
+            <a href="https://app.codegpt.co/chat/share/dd814661-6cd8-43b9-8155-18fdbbf8a6a4/?pincode=u7jxnu" target="_blank" class="btn btn-secondary fade-in-up delay-2">¡Habla con Ruufcito Aquí!</a>
         </div>
     </section>
 
     <!-- Sección de Llamada a la Acción Final -->
     <section class="cta-section">
         <div class="container">
-            <h2>¡No esperes más para transformar tu hogar!</h2>
-            <p>Empieza a ahorrar y a vivir de forma más sostenible hoy mismo.</p>
-            <a href="https://ruuf.cl/onboarding" target="_blank" class="btn btn-secondary">¡Cotiza tu Proyecto Solar Gratis!</a>
+            <h2 class="fade-in-up">¡Tu Futuro Solar Comienza Hoy!</h2>
+            <p class="fade-in-up delay-1">No esperes más para transformar tu hogar y tu economía. Empieza a ahorrar, a generar tus propios ingresos y a vivir de forma más sostenible. ¡Únete a la revolución solar con Ruuf!</p>
+            <a href="https://ruuf.cl/onboarding" target="_blank" class="btn btn-secondary fade-in-up delay-2">¡Cotiza tu Proyecto Solar Gratis!</a>
         </div>
     </section>
 
@@ -124,7 +747,104 @@
         </div>
     </footer>
 
-    <!-- Enlace a nuestro archivo JavaScript personalizado -->
-    <script src="script.js"></script>
+    <!-- JavaScript integrado -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Efecto Parallax para el fondo del Hero ---
+            const heroBackground = document.getElementById('heroBackground');
+            if (heroBackground) {
+                window.addEventListener('scroll', () => {
+                    const scrollY = window.scrollY;
+                    // Mueve el fondo del hero más lento que el scroll para el efecto parallax
+                    heroBackground.style.transform = `translateY(${scrollY * 0.4}px)`;
+                });
+            }
+
+            // --- Smooth Scrolling para enlaces de navegación ---
+            document.querySelectorAll('a.nav-link[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault(); // Previene el comportamiento de anclaje por defecto
+
+                    const targetId = this.getAttribute('href'); // Obtiene el ID del destino
+                    const targetElement = document.querySelector(targetId); // Selecciona el elemento destino
+
+                    if (targetElement) {
+                        // Calcula la posición a la que hacer scroll
+                        // Se resta la altura del header para que el contenido no quede oculto bajo él
+                        const headerOffset = document.querySelector('.header').offsetHeight;
+                        const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
+                        const offsetPosition = elementPosition - headerOffset;
+
+                        // Realiza el scroll suave
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+
+                        // Cierra el menú móvil si está abierto
+                        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+                        if (mobileNavOverlay && mobileNavOverlay.classList.contains('active')) {
+                            mobileNavOverlay.classList.remove('active');
+                            document.body.style.overflow = ''; // Habilita el scroll del body
+                        }
+                    }
+                });
+            });
+
+            // --- Animación de elementos al hacer scroll (Intersection Observer) ---
+            const animateElements = document.querySelectorAll('[data-animate-on-scroll]');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in-up');
+                        observer.unobserve(entry.target); // Deja de observar una vez que se ha animado
+                    }
+                });
+            }, {
+                threshold: 0.1, // El 10% del elemento debe ser visible para activar la animación
+                rootMargin: '0px 0px -50px 0px' // Inicia la animación un poco antes de que el elemento esté completamente en pantalla
+            });
+
+            animateElements.forEach(element => {
+                element.classList.remove('fade-in-up'); // Asegura que la clase no esté presente al inicio
+                observer.observe(element);
+            });
+
+            // --- Efecto de header al hacer scroll ---
+            const header = document.querySelector('.header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) { // Si el scroll es mayor a 50px
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // --- Menú móvil ---
+            const menuToggle = document.querySelector('.menu-toggle');
+            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+            const closeMenuButton = document.getElementById('closeMenu');
+            const mobileNavLinks = document.querySelectorAll('#mobileNavOverlay .nav-link');
+
+            menuToggle.addEventListener('click', () => {
+                mobileNavOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Evita el scroll del body cuando el menú está abierto
+            });
+
+            closeMenuButton.addEventListener('click', () => {
+                mobileNavOverlay.classList.remove('active');
+                document.body.style.overflow = ''; // Habilita el scroll del body
+            });
+
+            // Cierra el menú móvil al hacer clic en un enlace
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileNavOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+        });
+    </script>
 </body>
 </html>
